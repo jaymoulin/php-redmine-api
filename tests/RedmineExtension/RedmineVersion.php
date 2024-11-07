@@ -7,6 +7,14 @@ namespace Redmine\Tests\RedmineExtension;
 enum RedmineVersion: string
 {
     /**
+     * Redmine 5.1.4
+     *
+     * @link https://www.redmine.org/versions/197
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#514-2024-11-03
+     */
+    case V5_1_4 = '5.1.4';
+
+    /**
      * Redmine 5.1.3
      *
      * @link https://www.redmine.org/versions/195
@@ -46,6 +54,15 @@ enum RedmineVersion: string
      */
 
     case V5_0_9 = '5.0.9';
+
+    /**
+     * Redmine 5.0.10
+     *
+     * @link https://www.redmine.org/versions/196
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#5010-2024-11-03
+     */
+
+    case V5_0_10 = '5.0.10';
 
     /**
      * Redmine 5.0.8

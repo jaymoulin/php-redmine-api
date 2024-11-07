@@ -22,13 +22,13 @@ you can use the `behat` command directly:
 
 ```bash
 # test only a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_50103
+docker compose exec php composer behat -- --suite=redmine_50104
 # test only specific endpoints
 docker compose exec php composer behat -- --tags=issue,group
 # test only specific endpoints on a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_50103 --tags=issue,group
+docker compose exec php composer behat -- --suite=redmine_50104 --tags=issue,group
 # test only a specific redmine version and format the output as `progress` (default is `pretty`)
-docker compose exec php composer behat -- --suite=redmine_50103 --format=progress
+docker compose exec php composer behat -- --suite=redmine_50104 --format=progress
 ```
 
 ## Redmine version specific features
