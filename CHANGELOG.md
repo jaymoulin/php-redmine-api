@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New class `Redmine\Http\HttpFactory` to create `Redmine\Http\Request` and `Redmine\Http\Response` instances.
 
+### Changed
+
+- Behaviour-driven tests are run against Redmine 5.1.4, 5.0.10 and 4.2.10.
+
 ### Deprecated
 
 - `Redmine\Client\Client::requestGet()` is deprecated, use `\Redmine\Client\Client::request()` instead.
