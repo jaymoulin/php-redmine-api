@@ -85,7 +85,7 @@ enum RedmineVersion: string
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#5010-2024-11-03
      */
 
-     case V5_0_10 = '5.0.10';
+    case V5_0_10 = '5.0.10';
 
     /**
      * Redmine 5.0.9
