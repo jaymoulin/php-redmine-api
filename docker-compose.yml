@@ -11,8 +11,7 @@ services:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     redmine-dev:
-        image: redmine:5.1.4
-        user: "1000:1000"
+        image: redmine:6.0.2
         ports:
             - "3000:3000"
         environment:
@@ -25,23 +24,23 @@ services:
     # Make sure the following services are configured in:
     # - /tests/Behat/behat.yml
 
-    redmine-50104:
-        image: redmine:5.1.4
+    redmine-50105:
+        image: redmine:5.1.5
         user: "1000:1000"
         ports:
-            - "5103:3000"
+            - "5105:3000"
         environment:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-50104_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50104_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50105_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50105_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-50010:
         image: redmine:5.0.10
         user: "1000:1000"
         ports:
-            - "5009:3000"
+            - "5010:3000"
         environment:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true

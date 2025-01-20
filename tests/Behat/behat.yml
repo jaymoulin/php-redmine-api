@@ -1,11 +1,11 @@
 default:
     suites:
-        redmine_50104:
+        redmine_50105:
             paths:
                 - '%paths.base%/features'
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '5.1.4'
+                    redmineVersion: '5.1.5'
         redmine_50010:
             paths:
                 - '%paths.base%/features'
