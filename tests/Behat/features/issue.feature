@@ -77,26 +77,17 @@ Feature: Interacting with the REST API for issues
         And the returned data "status" property is an array
         And the returned data "status" property contains "1" items
         And the returned data "status.@attributes" property is an array
-        And the returned data "status.@attributes" property has only the following properties with Redmine version ">= 5.0.0"
+        And the returned data "status.@attributes" property has only the following properties
             """
             id
             name
             is_closed
             """
-        But the returned data "status.@attributes" property has only the following properties with Redmine version "< 5.0.0"
-            """
-            id
-            name
-            """
-        And the returned data "status.@attributes" property contains the following data with Redmine version ">= 5.0.0"
+        And the returned data "status.@attributes" property contains the following data
             | property          | value                |
             | id                | 1                    |
             | name              | New                  |
             | is_closed         | false                |
-        But the returned data "status.@attributes" property contains the following data with Redmine version "< 5.0.0"
-            | property          | value                |
-            | id                | 1                    |
-            | name              | New                  |
         And the returned data "priority" property is an array
         And the returned data "priority" property contains "1" items
         And the returned data "priority.@attributes" property is an array

@@ -31,20 +31,13 @@ Feature: Interacting with the REST API for trackers
         And the returned data "trackers" property is an array
         And the returned data "trackers" property contains "2" items
         And the returned data "trackers.0" property is an array
-        And the returned data "trackers.0" property has only the following properties with Redmine version ">= 5.0.0"
+        And the returned data "trackers.0" property has only the following properties
             """
             id
             name
             default_status
             description
             enabled_standard_fields
-            """
-        But the returned data "trackers.0" property has only the following properties with Redmine version "< 5.0.0"
-            """
-            id
-            name
-            default_status
-            description
             """
         And the returned data "trackers.0" property contains the following data
             | property          | value                |
