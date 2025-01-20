@@ -7,6 +7,7 @@ namespace Redmine\Tests\RedmineExtension;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PDO;
+use SQLite3;
 
 final class RedmineInstance
 {
@@ -190,7 +191,14 @@ final class RedmineInstance
      */
     private function createDatabaseBackup()
     {
-        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->backupDB);
+        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+
+        $backupDB = new SQLite3($this->rootPath . $this->backupDB);
+
+        $workingDB->backup($backupDB);
+
+        $workingDB->close();
+        $backupDB->close();
     }
 
     /**
@@ -198,17 +206,38 @@ final class RedmineInstance
      */
     private function saveMigratedDatabase()
     {
-        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->migratedDB);
+        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+
+        $migratedDB = new SQLite3($this->rootPath . $this->migratedDB);
+
+        $workingDB->backup($migratedDB);
+
+        $workingDB->close();
+        $migratedDB->close();
     }
 
     private function restoreFromMigratedDatabase(): void
     {
-        copy($this->rootPath . $this->migratedDB, $this->rootPath . $this->workingDB);
+        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+
+        $migratedDB = new SQLite3($this->rootPath . $this->migratedDB);
+
+        $migratedDB->backup($workingDB);
+
+        $workingDB->close();
+        $migratedDB->close();
     }
 
     private function restoreDatabaseFromBackup(): void
     {
-        copy($this->rootPath . $this->backupDB, $this->rootPath . $this->workingDB);
+        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+
+        $backupDB = new SQLite3($this->rootPath . $this->backupDB);
+
+        $backupDB->backup($workingDB);
+
+        $workingDB->close();
+        $backupDB->close();
     }
 
     private function removeDatabaseBackups(): void

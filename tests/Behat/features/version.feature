@@ -162,7 +162,6 @@ Feature: Interacting with the REST API for versions
             | id                | 1                    |
             | name              | Test Project         |
 
-    @wip
     Scenario: Listing of multiple version names
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project 1" and identifier "test-project-1"
