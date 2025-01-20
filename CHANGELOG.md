@@ -9,11 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Support for Redmine 6.0.x was added.
 - New class `Redmine\Http\HttpFactory` to create `Redmine\Http\Request` and `Redmine\Http\Response` instances.
 
 ### Changed
 
-- Behaviour-driven tests are run against Redmine 5.1.4, 5.0.10 and 4.2.10.
+- Behaviour-driven tests are run against Redmine 6.0.2, 5.1.4, 5.0.10.
 
 ### Deprecated
 
