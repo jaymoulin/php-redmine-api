@@ -37,6 +37,52 @@ jobs:
       - name: Run tests
         run: vendor/bin/phpunit --no-coverage
 
+  behat:
+    name: Tests (Behat with PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    services:
+      redmine-60002:
+        image: redmine:6.0.2
+        ports:
+            - "6002:3000"
+        env:
+            # Workaround: Remove secret for Rails 7.2 so it will be generated automatically
+            # @see https://github.com/docker-library/redmine/issues/349#issuecomment-2516634932
+            # REDMINE_SECRET_KEY_BASE: supersecretkey
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-60002_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-60002_data/sqlite:/usr/src/redmine/sqlite
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: ["ubuntu-latest"]
+        php: ["8.3"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpunit
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite
+          coverage: xdebug
+
+      # Install composer dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: "Install Composer dependencies"
+        uses: "ramsey/composer-install@v2"
+
+      - name: Run behat
+        run: vendor/bin/behat --config tests/Behat/behat.yml --suite=redmine_60002
+
   code-quality:
     name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
