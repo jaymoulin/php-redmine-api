@@ -52,8 +52,8 @@ jobs:
             # REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ../.redmine-temp/redmine-60002_data/files:/usr/src/redmine/files
-            - ../.redmine-temp/redmine-60002_data/sqlite:/usr/src/redmine/sqlite
+            - /tmp/.redmine-temp/redmine-60002_data/files:/usr/src/redmine/files
+            - /tmp/.redmine-temp/redmine-60002_data/sqlite:/usr/src/redmine/sqlite
 
     strategy:
       fail-fast: false
