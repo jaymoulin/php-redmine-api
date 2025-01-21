@@ -14,16 +14,16 @@ final class RedmineInstance
     /**
      * @param InstanceRegistration $tracer Required to ensure that RedmineInstance is created while Test Runner is running
      */
-    public static function create(InstanceRegistration $tracer, RedmineVersion $version): void
+    public static function create(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath): void
     {
-        $tracer->registerInstance(new self($tracer, $version));
+        $tracer->registerInstance(new self($tracer, $version, $rootPath));
     }
 
     private InstanceRegistration $tracer;
 
     private RedmineVersion $version;
 
-    private string $rootPath;
+    private string $dataPath;
 
     private string $workingDB;
 
@@ -41,14 +41,19 @@ final class RedmineInstance
 
     private string $apiKey;
 
-    private function __construct(InstanceRegistration $tracer, RedmineVersion $version)
+    private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath)
     {
         $this->tracer = $tracer;
         $this->version = $version;
 
         $versionId = strval($version->asId());
 
-        $this->rootPath = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/';
+        // Default to .docker folder
+        if ($rootPath === '') {
+            $rootPath = dirname(__FILE__, 3) . '/.docker';
+        }
+
+        $this->dataPath = $rootPath . '/redmine-' . $versionId . '_data/';
 
         $this->workingDB = 'sqlite/redmine.db';
         $this->migratedDB = 'sqlite/redmine-migrated.db';
@@ -108,10 +113,10 @@ final class RedmineInstance
             ));
         }
 
-        if (! file_exists($this->rootPath . $this->workingDB)) {
+        if (! file_exists($this->dataPath . $this->workingDB)) {
             throw new InvalidArgumentException(sprintf(
                 'Could not find database file in %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.yml.',
-                $this->rootPath . $this->workingDB,
+                $this->dataPath . $this->workingDB,
                 $version->asString(),
             ));
         }
@@ -146,7 +151,7 @@ final class RedmineInstance
      */
     public function excecuteDatabaseQuery(string $query, array $options = [], array $params = null): void
     {
-        $pdo = new PDO('sqlite:' . $this->rootPath . $this->workingDB);
+        $pdo = new PDO('sqlite:' . $this->dataPath . $this->workingDB);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt = $pdo->prepare($query, $options);
@@ -156,7 +161,7 @@ final class RedmineInstance
     private function runDatabaseMigration()
     {
         $now = new DateTimeImmutable();
-        $pdo = new PDO('sqlite:' . $this->rootPath . $this->workingDB);
+        $pdo = new PDO('sqlite:' . $this->dataPath . $this->workingDB);
 
         // Get admin user to check sqlite connection
         $stmt = $pdo->prepare('SELECT * FROM users WHERE login = :login;');
@@ -191,9 +196,9 @@ final class RedmineInstance
      */
     private function createDatabaseBackup()
     {
-        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+        $workingDB = new SQLite3($this->dataPath . $this->workingDB);
 
-        $backupDB = new SQLite3($this->rootPath . $this->backupDB);
+        $backupDB = new SQLite3($this->dataPath . $this->backupDB);
 
         $workingDB->backup($backupDB);
 
@@ -206,9 +211,9 @@ final class RedmineInstance
      */
     private function saveMigratedDatabase()
     {
-        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+        $workingDB = new SQLite3($this->dataPath . $this->workingDB);
 
-        $migratedDB = new SQLite3($this->rootPath . $this->migratedDB);
+        $migratedDB = new SQLite3($this->dataPath . $this->migratedDB);
 
         $workingDB->backup($migratedDB);
 
@@ -218,9 +223,9 @@ final class RedmineInstance
 
     private function restoreFromMigratedDatabase(): void
     {
-        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+        $workingDB = new SQLite3($this->dataPath . $this->workingDB);
 
-        $migratedDB = new SQLite3($this->rootPath . $this->migratedDB);
+        $migratedDB = new SQLite3($this->dataPath . $this->migratedDB);
 
         $migratedDB->backup($workingDB);
 
@@ -230,9 +235,9 @@ final class RedmineInstance
 
     private function restoreDatabaseFromBackup(): void
     {
-        $workingDB = new SQLite3($this->rootPath . $this->workingDB);
+        $workingDB = new SQLite3($this->dataPath . $this->workingDB);
 
-        $backupDB = new SQLite3($this->rootPath . $this->backupDB);
+        $backupDB = new SQLite3($this->dataPath . $this->backupDB);
 
         $backupDB->backup($workingDB);
 
@@ -242,18 +247,18 @@ final class RedmineInstance
 
     private function removeDatabaseBackups(): void
     {
-        unlink($this->rootPath . $this->migratedDB);
-        unlink($this->rootPath . $this->backupDB);
+        unlink($this->dataPath . $this->migratedDB);
+        unlink($this->dataPath . $this->backupDB);
     }
 
     private function createFilesBackup()
     {
         // Add an empty file to avoid warnings about copying and removing content from an empty folder
-        touch($this->rootPath . $this->workingFiles . 'empty');
+        touch($this->dataPath . $this->workingFiles . 'empty');
         exec(sprintf(
             'cp -r %s %s',
-            $this->rootPath . $this->workingFiles,
-            $this->rootPath . rtrim($this->backupFiles, '/'),
+            $this->dataPath . $this->workingFiles,
+            $this->dataPath . rtrim($this->backupFiles, '/'),
         ));
     }
 
@@ -261,8 +266,8 @@ final class RedmineInstance
     {
         exec(sprintf(
             'cp -r %s %s',
-            $this->rootPath . $this->workingFiles,
-            $this->rootPath . rtrim($this->migratedFiles, '/'),
+            $this->dataPath . $this->workingFiles,
+            $this->dataPath . rtrim($this->migratedFiles, '/'),
         ));
     }
 
@@ -270,13 +275,13 @@ final class RedmineInstance
     {
         exec(sprintf(
             'rm -r %s',
-            $this->rootPath . $this->workingFiles . '*',
+            $this->dataPath . $this->workingFiles . '*',
         ));
 
         exec(sprintf(
             'cp -r %s %s',
-            $this->rootPath . $this->migratedFiles . '*',
-            $this->rootPath . rtrim($this->workingFiles, '/'),
+            $this->dataPath . $this->migratedFiles . '*',
+            $this->dataPath . rtrim($this->workingFiles, '/'),
         ));
     }
 
@@ -284,13 +289,13 @@ final class RedmineInstance
     {
         exec(sprintf(
             'rm -r %s',
-            $this->rootPath . $this->workingFiles . '*',
+            $this->dataPath . $this->workingFiles . '*',
         ));
 
         exec(sprintf(
             'cp -r %s %s',
-            $this->rootPath . $this->backupFiles . '*',
-            $this->rootPath . rtrim($this->workingFiles, '/'),
+            $this->dataPath . $this->backupFiles . '*',
+            $this->dataPath . rtrim($this->workingFiles, '/'),
         ));
     }
 
@@ -298,10 +303,10 @@ final class RedmineInstance
     {
         exec(sprintf(
             'rm -r %s %s',
-            $this->rootPath . $this->migratedFiles,
-            $this->rootPath . $this->backupFiles,
+            $this->dataPath . $this->migratedFiles,
+            $this->dataPath . $this->backupFiles,
         ));
 
-        unlink($this->rootPath . $this->workingFiles . 'empty');
+        unlink($this->dataPath . $this->workingFiles . 'empty');
     }
 }
