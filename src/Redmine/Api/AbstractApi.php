@@ -43,7 +43,7 @@ abstract class AbstractApi implements Api
      */
     public function __construct($client)
     {
-        if (! is_object($client) || (! $client instanceof Client && ! $client instanceof HttpClient)) {
+        if (! $client instanceof Client && ! $client instanceof HttpClient) {
             throw new InvalidArgumentException(sprintf(
                 '%s(): Argument #1 ($client) must be of type %s or %s, `%s` given',
                 __METHOD__,

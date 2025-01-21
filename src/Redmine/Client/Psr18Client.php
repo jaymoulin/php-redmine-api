@@ -47,7 +47,15 @@ final class Psr18Client implements Client, HttpClient
         string $apikeyOrUsername,
         ?string $password = null
     ) {
-        if (! $requestFactory instanceof RequestFactoryInterface && $requestFactory instanceof ServerRequestFactoryInterface) {
+        if (! $requestFactory instanceof RequestFactoryInterface && ! $requestFactory instanceof ServerRequestFactoryInterface) {
+            throw new Exception(sprintf(
+                '%s(): Argument #2 ($requestFactory) must be of type %s',
+                __METHOD__,
+                RequestFactoryInterface::class,
+            ));
+        }
+
+        if ($requestFactory instanceof ServerRequestFactoryInterface) {
             @trigger_error(
                 sprintf(
                     '%s(): Providing Argument #2 ($requestFactory) as %s is deprecated since v2.3.0, please provide as %s instead.',
@@ -59,14 +67,6 @@ final class Psr18Client implements Client, HttpClient
             );
 
             $requestFactory = $this->handleServerRequestFactory($requestFactory);
-        }
-
-        if (! $requestFactory instanceof RequestFactoryInterface) {
-            throw new Exception(sprintf(
-                '%s(): Argument #2 ($requestFactory) must be of type %s',
-                __METHOD__,
-                RequestFactoryInterface::class,
-            ));
         }
 
         $this->httpClient = $httpClient;
