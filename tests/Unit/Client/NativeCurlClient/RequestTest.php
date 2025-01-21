@@ -50,7 +50,7 @@ class RequestTest extends TestCase
             'access_token',
         );
 
-        /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var Request&\PHPUnit\Framework\MockObject\MockObject */
         $request = $this->createConfiguredMock(Request::class, [
             'getMethod' => $method,
             'getPath' => '/path',
@@ -137,7 +137,7 @@ class RequestTest extends TestCase
             E_USER_DEPRECATED,
         );
 
-        /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var Request&\PHPUnit\Framework\MockObject\MockObject */
         $request = $this->createConfiguredMock(Request::class, [
             'getMethod' => 'POST',
             'getPath' => '/uploads.json',
