@@ -36,6 +36,8 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit --no-coverage
+      - name: Debug
+        run: echo ${RUNNER_TEMP}
 
   behat:
     name: Tests (Behat with PHP ${{ matrix.php }})
