@@ -18,3 +18,21 @@ default:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.0.10'
                     rootPath: '%paths.base%/../../.docker'
+
+github-actions:
+    suites:
+        redmine_60002:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '6.0.2'
+                    rootPath: '%paths.base%/../../../.redmine-temp'
+        redmine_50105:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.1.5'
+                    rootPath: '%paths.base%/../../../.redmine-temp'
+        redmine_50010:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.0.10'
+                    rootPath: '%paths.base%/../../../.redmine-temp'
