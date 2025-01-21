@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added support for PHP 8.4
+- Support for Redmine 6.0.x was added.
 - New class `Redmine\Http\HttpFactory` to create `Redmine\Http\Request` and `Redmine\Http\Response` instances.
 
 ### Changed
 
-- Behaviour-driven tests are run against Redmine 5.1.4, 5.0.10 and 4.2.10.
+- Behaviour-driven tests are run against Redmine 6.0.2, 5.1.4, 5.0.10.
 
 ### Deprecated
 
@@ -24,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Client\Client::getLastResponseStatusCode()` is deprecated, use `\Redmine\Client\Client::request()` or `\Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead.
 - `Redmine\Client\Client::getLastResponseContentType()` is deprecated, use `\Redmine\Client\Client::request()` or `\Redmine\Api\AbstractApi::getLastResponse()->getContentType()` instead.
 - `Redmine\Client\Client::getLastResponseBody()` is deprecated, use `\Redmine\Client\Client::request()` or `\Redmine\Api\AbstractApi::getLastResponse()->getContent()` instead.
+
+### Removed
+
+- Support for Redmine 4.2.x was dropped.
 
 ## [v2.7.0](https://github.com/kbsali/php-redmine-api/compare/v2.6.0...v2.7.0) - 2024-07-10
 

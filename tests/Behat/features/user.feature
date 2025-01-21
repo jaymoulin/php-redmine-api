@@ -120,7 +120,22 @@ Feature: Interacting with the REST API for users
         And the returned data "users" property is an array
         And the returned data "users" property contains "2" items
         And the returned data "users.0" property is an array
-        And the returned data "users.0" property has only the following properties
+        And the returned data "users.0" property has only the following properties with Redmine version ">= 6.0.0"
+            """
+            id
+            login
+            admin
+            firstname
+            lastname
+            mail
+            created_on
+            updated_on
+            last_login_on
+            passwd_changed_on
+            twofa_scheme
+            status
+            """
+        But the returned data "users.0" property has only the following properties with Redmine version "< 6.0.0"
             """
             id
             login
@@ -134,7 +149,17 @@ Feature: Interacting with the REST API for users
             passwd_changed_on
             twofa_scheme
             """
-        And the returned data "users.0" property contains the following data
+        And the returned data "users.0" property contains the following data with Redmine version ">= 6.0.0"
+            | property          | value                |
+            | id                | 1                    |
+            | login             | admin                |
+            | admin             | true                 |
+            | firstname         | Redmine              |
+            | lastname          | Admin                |
+            | mail              | admin@example.net    |
+            | twofa_scheme      | null                 |
+            | status            | 1                    |
+        But the returned data "users.0" property contains the following data with Redmine version "< 6.0.0"
             | property          | value                |
             | id                | 1                    |
             | login             | admin                |
@@ -144,7 +169,22 @@ Feature: Interacting with the REST API for users
             | mail              | admin@example.net    |
             | twofa_scheme      | null                 |
         And the returned data "users.1" property is an array
-        And the returned data "users.1" property has only the following properties
+        And the returned data "users.1" property has only the following properties with Redmine version ">= 6.0.0"
+            """
+            id
+            login
+            admin
+            firstname
+            lastname
+            mail
+            created_on
+            updated_on
+            last_login_on
+            passwd_changed_on
+            twofa_scheme
+            status
+            """
+        But the returned data "users.1" property has only the following properties with Redmine version "< 6.0.0"
             """
             id
             login
@@ -158,7 +198,17 @@ Feature: Interacting with the REST API for users
             passwd_changed_on
             twofa_scheme
             """
-        And the returned data "users.1" property contains the following data
+        And the returned data "users.1" property contains the following data with Redmine version ">= 6.0.0"
+            | property          | value                |
+            | id                | 5                    |
+            | login             | username             |
+            | admin             | false                |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.net     |
+            | twofa_scheme      | null                 |
+            | status            | 1                    |
+        And the returned data "users.1" property contains the following data with Redmine version "< 6.0.0"
             | property          | value                |
             | id                | 5                    |
             | login             | username             |

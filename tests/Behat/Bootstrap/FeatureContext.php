@@ -81,7 +81,7 @@ final class FeatureContext extends TestCase implements Context
      */
     private array $lastReturnAsArray;
 
-    public function __construct(string $redmineVersion)
+    public function __construct(string $redmineVersion, string $rootPath)
     {
         $version = RedmineVersion::tryFrom($redmineVersion);
 
@@ -89,7 +89,7 @@ final class FeatureContext extends TestCase implements Context
             throw new InvalidArgumentException('Redmine ' . $redmineVersion . ' is not supported.');
         }
 
-        $this->redmine = static::$tracer::getRedmineInstance($version);
+        $this->redmine = static::$tracer::getRedmineInstance($version, $rootPath);
 
         parent::__construct('BehatRedmine' . $version->asId());
     }

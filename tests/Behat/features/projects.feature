@@ -183,7 +183,6 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is exactly ""
 
-    @since50000
     Scenario: Closing a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -197,7 +196,6 @@ Feature: Interacting with the REST API for projects
             | property          | value                |
             | status            | 5                    |
 
-    @since50000
     Scenario: Reopening a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -212,7 +210,6 @@ Feature: Interacting with the REST API for projects
             | property          | value                |
             | status            | 1                    |
 
-    @since50000
     Scenario: Archiving a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -222,7 +219,7 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is true
 
-    @since50000 @error
+    @error
     Scenario: Showing an archived project is not possible
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -233,7 +230,6 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is false
 
-    @since50000
     Scenario: Unarchiving a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

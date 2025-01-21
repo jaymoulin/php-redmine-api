@@ -1,22 +1,38 @@
 default:
     suites:
-        redmine_50104:
+        default:
             paths:
                 - '%paths.base%/features'
+        redmine_60002:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '5.1.4'
+                    redmineVersion: '6.0.2'
+                    rootPath: '%paths.base%/../../.docker'
+        redmine_50105:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.1.5'
+                    rootPath: '%paths.base%/../../.docker'
         redmine_50010:
-            paths:
-                - '%paths.base%/features'
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.0.10'
-        redmine_40210:
-            paths:
-                - '%paths.base%/features'
+                    rootPath: '%paths.base%/../../.docker'
+
+github-actions:
+    suites:
+        redmine_60002:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '4.2.10'
-            filters:
-                tags: "~@since50000"
+                    redmineVersion: '6.0.2'
+                    rootPath: '/home/runner/work/_temp'
+        redmine_50105:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.1.5'
+                    rootPath: '/home/runner/work/_temp'
+        redmine_50010:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.0.10'
+                    rootPath: '/home/runner/work/_temp'
