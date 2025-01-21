@@ -149,7 +149,7 @@ final class RedmineInstance
     /**
      * Allows tests to prepare the database
      */
-    public function excecuteDatabaseQuery(string $query, array $options = [], array $params = null): void
+    public function excecuteDatabaseQuery(string $query, array $options = [], ?array $params = null): void
     {
         $pdo = new PDO('sqlite:' . $this->dataPath . $this->workingDB);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
