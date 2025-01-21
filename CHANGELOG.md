@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added support for PHP 8.4
 - Support for Redmine 6.0.x was added.
 - New class `Redmine\Http\HttpFactory` to create `Redmine\Http\Request` and `Redmine\Http\Response` instances.
 
