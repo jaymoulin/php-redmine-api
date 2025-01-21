@@ -25,14 +25,14 @@ github-actions:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.0.2'
-                    rootPath: '/var/tmp'
+                    rootPath: '/home/runner/work/_temp'
         redmine_50105:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.1.5'
-                    rootPath: '/var/tmp'
+                    rootPath: '/home/runner/work/_temp'
         redmine_50010:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.0.10'
-                    rootPath: '/var/tmp'
+                    rootPath: '/home/runner/work/_temp'
