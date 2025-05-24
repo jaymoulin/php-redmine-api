@@ -320,13 +320,16 @@ abstract class AbstractApi implements Api
 
         $returnData = [];
 
+        // Redmine max limit is 100,
+        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Collection-resources-and-pagination
+        $redmineLimit = 100;
         $requestedLimit = $remaininglimit = $params['limit'];
         $offset = $params['offset'];
 
         while ($remaininglimit > 0) {
-            if ($remaininglimit > 100) {
-                $realLimit = 100;
-                $remaininglimit -= 100;
+            if ($remaininglimit > $redmineLimit) {
+                $realLimit = $redmineLimit;
+                $remaininglimit -= $redmineLimit;
             } else {
                 $realLimit = $remaininglimit;
                 $remaininglimit = 0;
@@ -347,13 +350,13 @@ abstract class AbstractApi implements Api
             // After the first request we know the total_count for this endpoint
             // so lets use the total_count to correct $requestedLimit to save us
             // from making unnecessary requests
-            // e.g. total_count = 5; $requestedLimit = 500 will make only 1 request instead of 5
+            // e.g. total_count = 5 and $requestedLimit = 500 will make only 1 request instead of 2
             if (isset($newDataSet['total_count']) && $newDataSet['total_count'] < $requestedLimit) {
                 $requestedLimit = $remaininglimit = (int) $newDataSet['total_count'];
 
-                if ($remaininglimit > 100) {
-                    $realLimit = 100;
-                    $remaininglimit -= 100;
+                if ($remaininglimit > $redmineLimit) {
+                    $realLimit = $redmineLimit;
+                    $remaininglimit -= $redmineLimit;
                 } else {
                     $realLimit = $remaininglimit;
                     $remaininglimit = 0;
