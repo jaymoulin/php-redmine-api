@@ -398,6 +398,48 @@ class AbstractApiTest extends TestCase
         ];
     }
 
+    public function testRetrieveDataWith100ResultsMakes1Request(): void
+    {
+        $response1 = $this->createStub(Response::class);
+        $response1->method('getContentType')->willReturn('application/json');
+        $response1->method('getContent')->willReturn('{"total_count":100,"offset":0,"limit":100,"data":[]}');
+
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->once())->method('request')->willReturn($response1);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'retrieveData');
+        $method->setAccessible(true);
+
+        $method->invoke($api, '/data.json', ['limit' => 101]);
+    }
+
+    public function testRetrieveDataWith250ResultsMakes3Requests(): void
+    {
+        $response1 = $this->createStub(Response::class);
+        $response1->method('getContentType')->willReturn('application/json');
+        $response1->method('getContent')->willReturn('{"total_count":250,"offset":0,"limit":100,"data":[]}');
+
+        $response2 = $this->createStub(Response::class);
+        $response2->method('getContentType')->willReturn('application/json');
+        $response2->method('getContent')->willReturn('{"total_count":250,"offset":100,"limit":100,"data":[]}');
+
+        $response3 = $this->createStub(Response::class);
+        $response3->method('getContentType')->willReturn('application/json');
+        $response3->method('getContent')->willReturn('{"total_count":250,"offset":200,"limit":100,"data":[]}');
+
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->exactly(3))->method('request')->willReturnOnConsecutiveCalls($response1, $response2, $response3);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'retrieveData');
+        $method->setAccessible(true);
+
+        $method->invoke($api, '/data.json', ['limit' => 301]);
+    }
+
     /**
      * @dataProvider getRetrieveDataToExceptionData
      */

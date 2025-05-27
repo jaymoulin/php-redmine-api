@@ -320,18 +320,21 @@ abstract class AbstractApi implements Api
 
         $returnData = [];
 
-        $limit = $params['limit'];
+        // Redmine max limit is 100,
+        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Collection-resources-and-pagination
+        $redmineLimit = 100;
+        $requestedLimit = $remaininglimit = $params['limit'];
         $offset = $params['offset'];
 
-        while ($limit > 0) {
-            if ($limit > 100) {
-                $_limit = 100;
-                $limit -= 100;
+        while ($remaininglimit > 0) {
+            if ($remaininglimit > $redmineLimit) {
+                $realLimit = $redmineLimit;
+                $remaininglimit -= $redmineLimit;
             } else {
-                $_limit = $limit;
-                $limit = 0;
+                $realLimit = $remaininglimit;
+                $remaininglimit = 0;
             }
-            $params['limit'] = $_limit;
+            $params['limit'] = $realLimit;
             $params['offset'] = $offset;
 
             $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
@@ -344,16 +347,34 @@ abstract class AbstractApi implements Api
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
-            $offset += $_limit;
+            // After the first request we know the total_count for this endpoint
+            // so lets use the total_count to correct $requestedLimit to save us
+            // from making unnecessary requests
+            // e.g. total_count = 5 and $requestedLimit = 500 will make only 1 request instead of 2
+            if (isset($newDataSet['total_count']) && $newDataSet['total_count'] < $requestedLimit) {
+                $requestedLimit = $remaininglimit = (int) $newDataSet['total_count'];
+
+                if ($remaininglimit > $redmineLimit) {
+                    $realLimit = $redmineLimit;
+                    $remaininglimit -= $redmineLimit;
+                } else {
+                    $realLimit = $remaininglimit;
+                    $remaininglimit = 0;
+                }
+            }
+
+            $offset += $realLimit;
 
             if (
-                empty($newDataSet) || !isset($newDataSet['limit']) || (
-                    isset($newDataSet['offset']) &&
-                    isset($newDataSet['total_count']) &&
-                    $newDataSet['offset'] >= $newDataSet['total_count']
+                empty($newDataSet)
+                || !isset($newDataSet['limit'])
+                || (
+                    isset($newDataSet['offset'])
+                    && isset($newDataSet['total_count'])
+                    && $newDataSet['offset'] >= $newDataSet['total_count']
                 )
             ) {
-                $limit = 0;
+                $remaininglimit = 0;
             }
         }
 
