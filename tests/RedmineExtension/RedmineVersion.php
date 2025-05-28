@@ -7,6 +7,30 @@ namespace Redmine\Tests\RedmineExtension;
 enum RedmineVersion: string
 {
     /**
+     * Redmine 6.0.5
+     *
+     * @link https://www.redmine.org/versions/209
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#605-2025-04-20
+     */
+    case V6_0_5 = '6.0.5';
+
+    /**
+     * Redmine 6.0.4
+     *
+     * @link https://www.redmine.org/versions/206
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#604-2025-03-10
+     */
+    case V6_0_4 = '6.0.4';
+
+    /**
+     * Redmine 6.0.3
+     *
+     * @link https://www.redmine.org/versions/203
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#603-2025-01-29
+     */
+    case V6_0_3 = '6.0.3';
+
+    /**
      * Redmine 6.0.2
      *
      * @link https://www.redmine.org/versions/202
@@ -29,6 +53,30 @@ enum RedmineVersion: string
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#600-2024-11-10
      */
     case V6_0_0 = '6.0.0';
+
+    /**
+     * Redmine 5.1.8
+     *
+     * @link https://www.redmine.org/versions/208
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#518-2025-04-20
+     */
+    case V5_1_8 = '5.1.8';
+
+    /**
+     * Redmine 5.1.7
+     *
+     * @link https://www.redmine.org/versions/205
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#517-2025-03-10
+     */
+    case V5_1_7 = '5.1.7';
+
+    /**
+     * Redmine 5.1.6
+     *
+     * @link https://www.redmine.org/versions/204
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#516-2025-01-29
+     */
+    case V5_1_6 = '5.1.6';
 
     /**
      * Redmine 5.1.5
@@ -77,6 +125,24 @@ enum RedmineVersion: string
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#510-2023-10-31
      */
     case V5_1_0 = '5.1.0';
+
+    /**
+     * Redmine 5.0.12
+     *
+     * @link https://www.redmine.org/versions/207
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#5012-2025-03-10
+     */
+
+    case V5_0_12 = '5.0.12';
+
+    /**
+     * Redmine 5.0.11
+     *
+     * @link https://www.redmine.org/versions/200
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#5011-2025-01-30
+     */
+
+    case V5_0_11 = '5.0.11';
 
     /**
      * Redmine 5.0.10

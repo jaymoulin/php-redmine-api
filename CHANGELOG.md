@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Improvement in `Redmine\Client\AbstractApi::retrieveData()` by using `total_count` from redmine response to avoid unnecessary http requests.
-- Behaviour-driven tests are run against Redmine 6.0.2, 5.1.4, 5.0.10.
+- Behaviour-driven tests are run against Redmine 6.0.5, 5.1.8, 5.0.12.
 
 ### Deprecated
 
