@@ -20,7 +20,7 @@ use Redmine\Tests\RedmineExtension\RedmineVersion;
 use RuntimeException;
 use SimpleXMLElement;
 
-final class FeatureContext extends TestCase implements Context
+final class FeatureContext implements Context
 {
     use AttachmentContextTrait;
     use CustomFieldContextTrait;
@@ -90,8 +90,6 @@ final class FeatureContext extends TestCase implements Context
         }
 
         $this->redmine = static::$tracer::getRedmineInstance($version, $rootPath);
-
-        parent::__construct('BehatRedmine' . $version->asId());
     }
 
     /**
@@ -126,7 +124,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheStatusCode(int $statusCode)
     {
-        $this->assertSame(
+        TestCase::assertSame(
             $statusCode,
             $this->lastResponse->getStatusCode(),
             'Raw response content: ' . $this->lastResponse->getContent(),
@@ -138,7 +136,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheContentType(string $contentType)
     {
-        $this->assertStringStartsWith(
+        TestCase::assertStringStartsWith(
             $contentType,
             $this->lastResponse->getContentType(),
             'Raw response content: ' . $this->lastResponse->getContent(),
@@ -150,7 +148,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasAnEmptyContentType()
     {
-        $this->assertSame('', $this->lastResponse->getContentType());
+        TestCase::assertSame('', $this->lastResponse->getContentType());
     }
 
     /**
@@ -158,7 +156,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheContent(string $content)
     {
-        $this->assertSame($content, $this->lastResponse->getContent());
+        TestCase::assertSame($content, $this->lastResponse->getContent());
     }
 
     /**
@@ -166,7 +164,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheContentWithMultipleLines(PyStringNode $string)
     {
-        $this->assertSame($string->getRaw(), $this->lastResponse->getContent());
+        TestCase::assertSame($string->getRaw(), $this->lastResponse->getContent());
     }
 
     /**
@@ -174,7 +172,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataIsTrue()
     {
-        $this->assertTrue($this->lastReturn);
+        TestCase::assertTrue($this->lastReturn);
     }
 
     /**
@@ -182,7 +180,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataIsFalse()
     {
-        $this->assertFalse($this->lastReturn);
+        TestCase::assertFalse($this->lastReturn);
     }
 
     /**
@@ -190,7 +188,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataIsExactly(string $content)
     {
-        $this->assertSame($content, $this->lastReturn);
+        TestCase::assertSame($content, $this->lastReturn);
     }
 
     /**
@@ -198,7 +196,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string)
     {
-        $this->assertSame($string->getRaw(), $this->lastReturn);
+        TestCase::assertSame($string->getRaw(), $this->lastReturn);
     }
 
     /**
@@ -206,7 +204,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataIsAnInstanceOf(string $className)
     {
-        $this->assertInstanceOf($className, $this->lastReturn);
+        TestCase::assertInstanceOf($className, $this->lastReturn);
     }
 
     /**
@@ -214,7 +212,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataIsAnArray()
     {
-        $this->assertIsArray($this->lastReturn);
+        TestCase::assertIsArray($this->lastReturn);
     }
 
     /**
@@ -222,7 +220,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataContainsItems(int $count)
     {
-        $this->assertCount($count, $this->lastReturn);
+        TestCase::assertCount($count, $this->lastReturn);
     }
 
     /**
@@ -264,7 +262,7 @@ final class FeatureContext extends TestCase implements Context
 
         $value = $this->getItemFromArray($returnData, $property);
 
-        $this->assertIsArray($value);
+        TestCase::assertIsArray($value);
     }
 
     /**
@@ -276,8 +274,8 @@ final class FeatureContext extends TestCase implements Context
 
         $value = $this->getItemFromArray($returnData, $property);
 
-        $this->assertIsArray($value);
-        $this->assertCount($count, $value);
+        TestCase::assertIsArray($value);
+        TestCase::assertCount($count, $value);
     }
 
     /**
@@ -321,7 +319,7 @@ final class FeatureContext extends TestCase implements Context
 
         $properties = array_keys($value);
 
-        $this->assertSame($string->getStrings(), $properties);
+        TestCase::assertSame($string->getStrings(), $properties);
     }
 
     /**
@@ -393,7 +391,7 @@ final class FeatureContext extends TestCase implements Context
     private function assertTableNodeIsSameAsArray(TableNode $table, array $data)
     {
         foreach ($table as $row) {
-            $this->assertArrayHasKey($row['property'], $data, 'Possible keys are: ' . implode(', ', array_keys($data)));
+            TestCase::assertArrayHasKey($row['property'], $data, 'Possible keys are: ' . implode(', ', array_keys($data)));
 
             $value = $data[$row['property']];
 
@@ -438,7 +436,7 @@ final class FeatureContext extends TestCase implements Context
                 $expected = str_replace('%redmine_id%', strval($this->redmine->getVersionId()), $expected);
             }
 
-            $this->assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
+            TestCase::assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
         }
     }
 }

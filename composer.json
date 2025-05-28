@@ -33,9 +33,9 @@
         "behat/behat": "^3.14",
         "friendsofphp/php-cs-fixer": "^3.68",
         "guzzlehttp/psr7": "^2",
-        "php-mock/php-mock-phpunit": "^2.6",
+        "php-mock/php-mock-phpunit": "^2.13",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.5 || ^10.5 || ^12.0"
+        "phpunit/phpunit": "^9.5 || ^10.5 || ^11.2 || ^12.0.9"
     },
     "autoload": {
         "psr-4": {
